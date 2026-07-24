@@ -33,6 +33,31 @@ def insert_upload(filename):
     return file_id
 
 
+def delete_uploads_older_than(days):
+    conn = sqlite3.connect("database.db")
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        SELECT filename FROM uploads
+        WHERE upload_time <= datetime('now', ?)
+        """,
+        (f"-{days} days",)
+    )
+    rows = cursor.fetchall()
+
+    cursor.execute(
+        """
+        DELETE FROM uploads
+        WHERE upload_time <= datetime('now', ?)
+        """,
+        (f"-{days} days",)
+    )
+    conn.commit()
+    conn.close()
+
+    return [row[0] for row in rows]
+
+
 def init_database():
     conn = sqlite3.connect("database.db")
 
