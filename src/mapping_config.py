@@ -1,0 +1,52 @@
+"""
+Column name mapping definitions.
+
+{Column Name: API Field Name}
+"""
+
+FIELD_MAPPING = {
+    "Unique Key": "unique_key",
+    "Created Date": "created_date",
+    "Closed Date": "closed_date",
+    "Agency": "agency",
+    "Agency Name": "agency_name",
+    "Problem (formerly Complaint Type)": "complaint_type",
+    "Problem Detail (formerly Descriptor)": "descriptor",
+    "Additional Details": "descriptor_2",
+    "Location Type": "location_type",
+    "Incident Zip": "incident_zip",
+    "Incident Address": "incident_address",
+    "Street Name": "street_name",
+    "Cross Street 1": "cross_street_1",
+    "Cross Street 2": "cross_street_2",
+    "Intersection Street 1": "intersection_street_1",
+    "Intersection Street 2": "intersection_street_2",
+    "Address Type": "address_type",
+    "City": "city",
+    "Landmark": "landmark",
+    "Facility Type": "facility_type",
+    "Status": "status",
+    "Due Date": "due_date",
+    "Resolution Description": "resolution_description",
+    "Resolution Action Updated Date": "resolution_action_updated_date",
+    "Community Board": "community_board",
+    "Council District": "council_district",
+    "Police Precinct": "police_precinct",
+    "BBL": "bbl",
+    "Borough": "borough",
+    "X Coordinate (State Plane)": "x_coordinate_state_plane",
+    "Y Coordinate (State Plane)": "y_coordinate_state_plane",
+    "Open Data Channel Type": "open_data_channel_type",
+    "Park Facility Name": "park_facility_name",
+    "Park Borough": "park_borough",
+    "Vehicle Type": "vehicle_type",
+    "Taxi Company Borough": "taxi_company_borough",
+    "Taxi Pick Up Location": "taxi_pick_up_location",
+    "Bridge Highway Name": "bridge_highway_name",
+    "Bridge Highway Direction": "bridge_highway_direction",
+    "Road Ramp": "road_ramp",
+    "Bridge Highway Segment": "bridge_highway_segment",
+    "Latitude": "latitude",
+    "Longitude": "longitude",
+    "Location": "location"
+}

@@ -1,0 +1,6 @@
+2026-07-24 17:46:47 INFO [app] Uploading file: 311_Service_Requests_from_2020_to_Present_20260724.csv
+2026-07-24 17:46:47 INFO [app] Saved upload 311_Service_Requests_from_2020_to_Present_20260724.csv with id 10
+2026-07-24 17:46:47 INFO [app] Cleaning up uploads older than 7 days
+2026-07-24 17:47:04 INFO [app] Queued background plot generation for 311_Service_Requests_from_2020_to_Present_20260724.csv
+2026-07-24 17:47:04 INFO [app] Starting background plot generation for 311_Service_Requests_from_2020_to_Present_20260724.csv
+2026-07-24 17:47:09 INFO [app] Plot generation completed for 311_Service_Requests_from_2020_to_Present_20260724.csv
