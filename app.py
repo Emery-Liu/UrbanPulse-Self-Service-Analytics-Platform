@@ -29,7 +29,6 @@ from src.logger import get_logger
 from src.model import SummaryResponse
 from src.streaming import (
     stream_analysis,
-    stream_resolution_hours,
     validate_csv_file,
 )
 from src.visualization import plot_images_from_aggregates
@@ -274,10 +273,21 @@ def get_summary(file_id: int):
         return cached_result
 
     try:
-        hours = stream_resolution_hours(file_path)
-        result = resolution_summary(
-            pd.DataFrame({"resolution_hours": hours})
+        aggregates = stream_analysis(file_path)
+        stats = resolution_summary(
+            pd.DataFrame({"resolution_hours": aggregates.resolution_hours})
         )
+
+        result = {
+            **stats,
+            "top_complaints": aggregates.top_complaints.to_dict(),
+            "borough_counts": aggregates.borough_counts.to_dict(),
+            "agency_resolution_time": aggregates.agency_resolution_time.to_dict(),
+            "complaint_resolution_time": aggregates.complaint_resolution_time.to_dict(),
+            "agency_complaint_counts": aggregates.agency_complaint_counts.to_dict(),
+            "top_complaints_by_borough": aggregates.top_complaints_by_borough.to_dict(orient="records"),
+        }
+
         _save_summary_to_cache(file_id, file_path, result)
         return result
     except ValueError as exc:
@@ -435,5 +445,5 @@ if __name__ == "__main__":
     uvicorn.run(
         app=app,
         host="127.0.0.1",
-        port=8000,
+        port=8001,
     )

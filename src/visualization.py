@@ -9,15 +9,6 @@ import folium
 from folium.plugins import HeatMap
 import matplotlib.pyplot as plt
 
-from src.analysis import (
-    top10_complaints,
-    borough_counts,
-    agency_resolution_time,
-    top_complaints_by_borough,
-    agency_complaint_counts,
-)
-
-
 PROJECT_DIR = Path(__file__).resolve().parent.parent
 DEFAULT_OUTPUT_DIR = PROJECT_DIR / "figures"
 
@@ -174,27 +165,6 @@ def plot_heatmap(df, output_dir=None):
         ).add_to(map_obj)
 
     map_obj.save(output_dir / "request_heatmap.html")
-
-
-def plot_images(df, output_dir=None):
-    output_dir = _output_dir(output_dir)
-
-    plot_top_complaints(top10_complaints(df), output_dir)
-    plot_borough_distribution(borough_counts(df), output_dir)
-    plot_agency_resolution(agency_resolution_time(df), output_dir)
-    plot_resolution_histogram(
-        df["resolution_hours"].dropna(),
-        output_dir
-    )
-    plot_agency_complaint_counts(
-        agency_complaint_counts(df),
-        output_dir
-    )
-    plot_top_complaints_by_borough(
-        top_complaints_by_borough(df),
-        output_dir
-    )
-    plot_heatmap(df, output_dir)
 
 
 def plot_images_from_aggregates(aggregates, output_dir=None):

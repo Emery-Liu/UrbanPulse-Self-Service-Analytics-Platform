@@ -12,94 +12,80 @@ def get_connection():
 
 def get_filename_by_id(file_id):
     conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute(
-        """
-        SELECT filename FROM uploads
-        WHERE id = ?
-        """,
-        (file_id,)
-    )
-    row = cursor.fetchone()
-    conn.close()
-    return row
+    try:
+        cursor = conn.cursor()
+        cursor.execute(
+            """
+            SELECT filename FROM uploads
+            WHERE id = ?
+            """,
+            (file_id,),
+        )
+        return cursor.fetchone()
+    finally:
+        conn.close()
 
 
 def insert_upload(filename):
     conn = get_connection()
-    cursor = conn.cursor()
-
-    cursor.execute(
-        """
-        INSERT INTO uploads
-        (filename, upload_time)
-        VALUES (?, datetime('now'))
-        """,
-        (filename,)
-    )
-    conn.commit()
-    file_id = cursor.lastrowid
-    conn.close()
-    return file_id
+    try:
+        cursor = conn.cursor()
+        cursor.execute(
+            """
+            INSERT INTO uploads
+            (filename, upload_time)
+            VALUES (?, datetime('now'))
+            """,
+            (filename,),
+        )
+        conn.commit()
+        return cursor.lastrowid
+    finally:
+        conn.close()
 
 
 def get_uploads_older_than(days):
     conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute(
-        """
-        SELECT id, filename FROM uploads
-        WHERE upload_time <= datetime('now', ?)
-        """,
-        (f"-{days} days",)
-    )
-    rows = cursor.fetchall()
-    conn.close()
-    return rows
+    try:
+        cursor = conn.cursor()
+        cursor.execute(
+            """
+            SELECT id, filename FROM uploads
+            WHERE upload_time <= datetime('now', ?)
+            """,
+            (f"-{days} days",),
+        )
+        return cursor.fetchall()
+    finally:
+        conn.close()
 
 
 def delete_upload(upload_id):
     conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute(
-        "DELETE FROM uploads WHERE id = ?",
-        (upload_id,)
-    )
-    conn.commit()
-    conn.close()
-
-
-def delete_uploads_older_than(days):
-    """Delete upload metadata only; file deletion is handled by app.py."""
-    rows = get_uploads_older_than(days)
-    if not rows:
-        return []
-
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.executemany(
-        "DELETE FROM uploads WHERE id = ?",
-        [(row[0],) for row in rows]
-    )
-    conn.commit()
-    conn.close()
-
-    return [row[1] for row in rows]
+    try:
+        cursor = conn.cursor()
+        cursor.execute(
+            "DELETE FROM uploads WHERE id = ?",
+            (upload_id,),
+        )
+        conn.commit()
+    finally:
+        conn.close()
 
 
 def init_database():
     conn = get_connection()
-    cursor = conn.cursor()
-
-    cursor.execute(
-        """
-        CREATE TABLE IF NOT EXISTS uploads (
-            id INTEGER PRIMARY KEY,
-            filename TEXT NOT NULL,
-            upload_time TEXT NOT NULL
+    try:
+        cursor = conn.cursor()
+        cursor.execute(
+            """
+            CREATE TABLE IF NOT EXISTS uploads (
+                id INTEGER PRIMARY KEY,
+                filename TEXT NOT NULL,
+                upload_time TEXT NOT NULL
+            )
+            """
         )
-        """
-    )
-
-    conn.commit()
-    conn.close()
+        conn.commit()
+    finally:
+        conn.close()

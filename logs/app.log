@@ -4,3 +4,25 @@
 2026-07-24 17:47:04 INFO [app] Queued background plot generation for 311_Service_Requests_from_2020_to_Present_20260724.csv
 2026-07-24 17:47:04 INFO [app] Starting background plot generation for 311_Service_Requests_from_2020_to_Present_20260724.csv
 2026-07-24 17:47:09 INFO [app] Plot generation completed for 311_Service_Requests_from_2020_to_Present_20260724.csv
+2026-10-17 13:42:52 INFO [__main__] Uploading file: 311_Service_Requests.csv
+2026-10-17 13:44:59 INFO [__main__] Uploading file: 311_Service_Requests_from_2020_to_Present_20261017.csv
+2026-10-17 13:44:59 INFO [__main__] Saved upload 311_Service_Requests_from_2020_to_Present_20261017.csv as aa98b9931e3e4851b614112bbb98a10b.csv with id 11
+2026-10-17 13:44:59 INFO [__main__] Cleaning up uploads older than 7 days
+2026-10-17 13:44:59 INFO [__main__] Deleted old upload: /Users/liuzhihe/Desktop/Project/311_request/uploads/311_Service_Requests_from_2020_to_Present_20260724.csv
+2026-10-17 13:44:59 INFO [__main__] Deleted old upload: /Users/liuzhihe/Desktop/Project/311_request/uploads/311_Service_Requests_20251231.csv
+2026-10-17 13:44:59 INFO [__main__] Deleted old upload: /Users/liuzhihe/Desktop/Project/311_request/uploads/311_Service_Requests_from_2020_to_Present_20260724.csv
+2026-10-17 13:44:59 INFO [__main__] Deleted old upload: /Users/liuzhihe/Desktop/Project/311_request/uploads/311_Service_Requests_from_2020_to_Present_20260724.csv
+2026-10-17 13:44:59 INFO [__main__] Deleted old upload: /Users/liuzhihe/Desktop/Project/311_request/uploads/311_Service_Requests_from_2020_to_Present_20260724.csv
+2026-10-17 13:44:59 INFO [__main__] Deleted old upload: /Users/liuzhihe/Desktop/Project/311_request/uploads/311_Service_Requests_from_2020_to_Present_20260724.csv
+2026-10-17 13:45:20 INFO [__main__] Queued background plot generation for aa98b9931e3e4851b614112bbb98a10b.csv
+2026-10-17 13:45:20 INFO [__main__] Starting background plot generation for aa98b9931e3e4851b614112bbb98a10b.csv
+2026-10-17 13:45:20 INFO [__main__] Plot generation completed for aa98b9931e3e4851b614112bbb98a10b.csv
+2026-10-17 13:55:31 INFO [app] Uploading file: 311_Service_Requests_from_2020_to_Present_20261017.csv
+2026-10-17 13:55:32 INFO [app] Saved upload 311_Service_Requests_from_2020_to_Present_20261017.csv as b830ca633ee7445a8d6a23071678bb7f.csv with id 12
+2026-10-17 13:55:32 INFO [app] Cleaning up uploads older than 7 days
+2026-10-17 13:55:50 INFO [app] Queued background plot generation for b830ca633ee7445a8d6a23071678bb7f.csv
+2026-10-17 13:55:50 INFO [app] Starting background plot generation for b830ca633ee7445a8d6a23071678bb7f.csv
+2026-10-17 13:55:51 INFO [app] Plot generation completed for b830ca633ee7445a8d6a23071678bb7f.csv
+2026-10-17 14:13:55 INFO [app] Uploading file: 311_Service_Requests_from_2020_to_Present_20261017.csv
+2026-10-17 14:13:55 INFO [app] Saved upload 311_Service_Requests_from_2020_to_Present_20261017.csv as 94d53ced24cc4f62970564659c493804.csv with id 13
+2026-10-17 14:13:55 INFO [app] Cleaning up uploads older than 7 days

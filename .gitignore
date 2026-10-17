@@ -19,4 +19,10 @@ venv/
 # database
 database.db
 
-/notebooks
+notebooks/
+figures/
+sample_data/
+uploads/
+app 2.py
+src/database 2.py
+src/visualization 2.py

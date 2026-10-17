@@ -7,7 +7,7 @@ import random
 import numpy as np
 import pandas as pd
 
-from src.cleaning import add_resolution_col
+from src.cleaning import parse_and_filter_dates
 from src.mapping_config import FIELD_MAPPING
 
 
@@ -21,6 +21,7 @@ class StreamingAnalysis:
     top_complaints: pd.Series
     borough_counts: pd.Series
     agency_resolution_time: pd.Series
+    complaint_resolution_time: pd.Series
     agency_complaint_counts: pd.Series
     top_complaints_by_borough: pd.DataFrame
     coordinates: list[tuple[float, float]]
@@ -60,26 +61,21 @@ def _iter_prepared_chunks(
         for chunk in reader:
             chunk.rename(columns=FIELD_MAPPING, inplace=True)
 
-            created = pd.to_datetime(
-                chunk["created_date"],
-                errors="coerce",
-            )
-            closed = pd.to_datetime(
-                chunk["closed_date"],
-                errors="coerce",
-            )
-            valid_rows = (
-                created.notna()
-                & closed.notna()
-                & (closed >= created)
-            )
+            filtered = parse_and_filter_dates(chunk)
 
             # A chunk may contain no valid closed requests while a later
             # chunk still contains valid rows.
-            if not valid_rows.any():
+            if filtered.empty:
                 continue
 
-            yield add_resolution_col(chunk)
+            filtered["resolution_time"] = (
+                filtered["closed_date"] - filtered["created_date"]
+            )
+            filtered["resolution_hours"] = (
+                filtered["resolution_time"].dt.total_seconds() / 3600
+            )
+
+            yield filtered
 
     except (
         pd.errors.EmptyDataError,
@@ -132,6 +128,7 @@ def stream_analysis(file_path: Path) -> StreamingAnalysis:
     borough_counts = Counter()
     agency_counts = Counter()
     agency_resolution = defaultdict(lambda: [0.0, 0])
+    complaint_resolution = defaultdict(lambda: [0.0, 0])
     borough_complaints = defaultdict(Counter)
     resolution_hours = array("d")
     coordinates: list[tuple[float, float]] = []
@@ -159,6 +156,14 @@ def stream_analysis(file_path: Path) -> StreamingAnalysis:
         ):
             agency_resolution[agency][0] += float(values["sum"])
             agency_resolution[agency][1] += int(values["count"])
+
+        for complaint_type, values in (
+            chunk.groupby("complaint_type")["resolution_hours"]
+            .agg(["sum", "count"])
+            .iterrows()
+        ):
+            complaint_resolution[complaint_type][0] += float(values["sum"])
+            complaint_resolution[complaint_type][1] += int(values["count"])
 
         borough_grouped = (
             chunk.groupby(["borough", "complaint_type"])
@@ -222,6 +227,12 @@ def stream_analysis(file_path: Path) -> StreamingAnalysis:
         if count > 0
     }).sort_values()
 
+    complaint_resolution_series = pd.Series({
+        complaint_type: total / count
+        for complaint_type, (total, count) in complaint_resolution.items()
+        if count > 0
+    }).sort_values(ascending=False)
+
     top_by_borough_rows = []
     for borough, complaints in borough_complaints.items():
         for complaint_type, count in complaints.most_common(10):
@@ -244,6 +255,7 @@ def stream_analysis(file_path: Path) -> StreamingAnalysis:
         borough_counts=pd.Series(dict(borough_counts))
         .sort_values(ascending=False),
         agency_resolution_time=agency_resolution_series,
+        complaint_resolution_time=complaint_resolution_series,
         agency_complaint_counts=pd.Series(dict(agency_counts))
         .sort_values(ascending=False),
         top_complaints_by_borough=top_by_borough,

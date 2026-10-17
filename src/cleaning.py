@@ -1,54 +1,33 @@
-import numpy as np
 import pandas as pd
 
-HOUR_IN_SEC = 3600
+def parse_and_filter_dates(df: pd.DataFrame) -> pd.DataFrame:
+    """Parse date columns to datetime and filter to rows with valid, non-negative resolution time.
 
-# Purpose: Convert created_date(str) and closed_date(str) into datetime type,
-#   add resolution_time and resolution_hours by calculate the difference between
-#   created_date and closed_date
-# Parameter: ori_dataframe (pd.DataFrame)
-# Return: new pd.DataFrame with addtional columns
-# Note: ori_dataframe must contain created_date and closed_date columns
-def add_resolution_col(ori_dataframe: pd.DataFrame) -> pd.DataFrame:
+    Returns a (possibly empty) DataFrame with parsed datetime columns.
+    """
     required_columns = {"created_date", "closed_date"}
-    missing_columns = required_columns - set(ori_dataframe.columns)
+    missing_columns = required_columns - set(df.columns)
 
     if missing_columns:
         raise ValueError(
             f"Missing required columns: {sorted(missing_columns)}"
         )
 
-    df = ori_dataframe.copy()
+    result = df.copy()
 
-    df["created_date"] = pd.to_datetime(
-        df["created_date"],
+    result["created_date"] = pd.to_datetime(
+        result["created_date"],
         errors="coerce"
     )
-    df["closed_date"] = pd.to_datetime(
-        df["closed_date"],
+    result["closed_date"] = pd.to_datetime(
+        result["closed_date"],
         errors="coerce"
     )
 
     valid_rows = (
-        df["created_date"].notna()
-        & df["closed_date"].notna()
-        & (df["closed_date"] >= df["created_date"])
+        result["created_date"].notna()
+        & result["closed_date"].notna()
+        & (result["closed_date"] >= result["created_date"])
     )
 
-    df = df.loc[valid_rows].copy()
-
-    if df.empty:
-        raise ValueError(
-            "No valid rows with a non-negative resolution time."
-        )
-
-    df["resolution_time"] = (
-        df["closed_date"] - df["created_date"]
-    )
-
-    df["resolution_hours"] = (
-        df["resolution_time"].dt.total_seconds()
-        / HOUR_IN_SEC
-    )
-
-    return df
+    return result.loc[valid_rows].copy()
