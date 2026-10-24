@@ -1,13 +1,7 @@
-# How to use (Cloud & Local)
-## Cloud
-Access: https://nyc-311-analysis.onrender.com/docs
+# Cloud
+[API Docs Swagger](https://urbanpulseservice-cvhxawg2ctageahy.canadaeast-01.azurewebsites.net/docs)
+Deployed on **Azure App Service** (Linux, Python 3.11) with CI/CD via **GitHub Actions**.
 
-## Local
-1. Ensure you have the required dependencies installed.
-   "pip install -r requirements.txt"
-2. Check your current directory, go to the folder root directory.
-   run "uvicorn app:app --reload"
-3. Access http://127.0.0.1:8001/docs locally
 
 # NYC 311 Service Requests Analysis
 This project explores NYC 311 service request data using Python, Pandas, NumPy, and Matplotlib.
