@@ -17,10 +17,12 @@ def parse_and_filter_dates(df: pd.DataFrame) -> pd.DataFrame:
 
     result["created_date"] = pd.to_datetime(
         result["created_date"],
+        format="%m/%d/%Y %I:%M:%S %p",
         errors="coerce"
     )
     result["closed_date"] = pd.to_datetime(
         result["closed_date"],
+        format="%m/%d/%Y %I:%M:%S %p",
         errors="coerce"
     )
 
