@@ -26,3 +26,5 @@ uploads/
 app 2.py
 src/database 2.py
 src/visualization 2.py
+logs/
+notebooks/
