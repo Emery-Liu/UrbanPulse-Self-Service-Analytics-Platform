@@ -1,5 +1,17 @@
 import pandas as pd
 
+from src.mapping_config import DATE_FORMATS
+
+
+def _parse_dates(values: pd.Series) -> pd.Series:
+    parsed = pd.to_datetime(values, format=DATE_FORMATS[0], errors="coerce")
+    for fmt in DATE_FORMATS[1:]:
+        missing = parsed.isna() & values.notna()
+        if not missing.any():
+            break
+        parsed[missing] = pd.to_datetime(values[missing], format=fmt, errors="coerce")
+    return parsed
+
 def parse_and_filter_dates(df: pd.DataFrame) -> pd.DataFrame:
     """Parse date columns to datetime and filter to rows with valid, non-negative resolution time.
 
@@ -15,16 +27,8 @@ def parse_and_filter_dates(df: pd.DataFrame) -> pd.DataFrame:
 
     result = df.copy()
 
-    result["created_date"] = pd.to_datetime(
-        result["created_date"],
-        format="%m/%d/%Y %I:%M:%S %p",
-        errors="coerce"
-    )
-    result["closed_date"] = pd.to_datetime(
-        result["closed_date"],
-        format="%m/%d/%Y %I:%M:%S %p",
-        errors="coerce"
-    )
+    result["created_date"] = _parse_dates(result["created_date"])
+    result["closed_date"] = _parse_dates(result["closed_date"])
 
     valid_rows = (
         result["created_date"].notna()

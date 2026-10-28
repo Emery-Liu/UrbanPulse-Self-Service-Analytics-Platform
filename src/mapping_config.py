@@ -3,6 +3,10 @@ Column name mapping definitions.
 
 {Column Name: API Field Name}
 """
+DATE_FORMATS = [
+    "%m/%d/%Y %I:%M:%S %p",   # NYC
+    "%b %d, %Y %I:%M %p",     # Edmonton
+]
 
 FIELD_MAPPING = {
     "Unique Key": "unique_key",
@@ -48,5 +52,15 @@ FIELD_MAPPING = {
     "Bridge Highway Segment": "bridge_highway_segment",
     "Latitude": "latitude",
     "Longitude": "longitude",
-    "Location": "location"
+    "Location": "location",
+
+
+    # --- City of Edmonton 311 Requests ---
+    "Date Created": "created_date",
+    "Date Closed": "closed_date",
+    "Service Category": "complaint_type",
+    "Service Area": "agency",
+    "Ward": "borough",
+    "Nbhd Latitude": "latitude",
+    "Nbhd Longitude": "longitude",
 }
